@@ -48,24 +48,40 @@ router.post("/", (req, res) => {
         .catch(err => res.status(500).json(err));
 });
 
+/**
+ * @route GET /categories
+ * @desc Returns all categories
+ * @access Private
+ * @todo ACL
+ */
 router.get("/categories", (req, res) => {
    Expense.find().distinct('category')
        .then(categories => res.json(prepareSelect2Options(categories)))
        .catch(err => res.status(404).json(err))
 });
 
+/**
+ * @route GET /tags
+ * @desc Returns all tags
+ * @access Private
+ * @todo ACL
+ */
 router.get("/tags", (req, res) => {
     Expense.find().distinct('tags')
         .then(tags => res.json(prepareSelect2Options(tags)))
         .catch(err => res.status(404).json(err))
 });
 
+/**
+ * @route GET /counterparts
+ * @desc Returns all counterparts
+ * @access Private
+ * @todo ACL
+ */
 router.get("/counterparts", (req, res) => {
     Expense.find().distinct('counterpart')
         .then(counterparts => res.json(prepareSelect2Options(counterparts)))
         .catch(err => res.status(404).json(err))
 });
-
-
 
 module.exports = router;
