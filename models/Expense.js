@@ -24,7 +24,8 @@ const ExpenseSchema = new Schema({
     date: {
         type: Date,
         default: Date.now
-    }
+    },
+    comment: String
 });
 
 module.exports = User = mongoose.model("expenses", ExpenseSchema);

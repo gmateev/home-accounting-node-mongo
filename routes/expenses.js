@@ -46,7 +46,8 @@ router.post("/", (req, res) => {
         tags: req.body['tags[]'],
         counterpart: req.body.counterpart,
         date: req.body.date,
-        category: req.body.category
+        category: req.body.category,
+        comment: req.body.comment
     }
 
     new Expense(newExpense)
