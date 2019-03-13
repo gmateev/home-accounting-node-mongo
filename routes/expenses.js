@@ -6,6 +6,8 @@ const mongoose = require("mongoose");
 const Expense = require("../models/Expense");
 // Load response helper
 const prepareSelect2Options = require("../helpers/prepareSelect2Options");
+// Load validation
+const validateExpenseInput = require("../validation/expense");
 
 /**
  * @route GET /
@@ -34,6 +36,11 @@ router.post("/", (req, res) => {
      * @todo Validation
      * @type {{amount: (Document.amount|amount|{type, min, required}|PaymentCurrencyAmount), tags: boolean, counterpart: (Document.counterpart|counterpart|{type, required}), date: *, category: *}}
      */
+    const {errors, isValid} = validateExpenseInput(req.body);
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+
     const newExpense = {
         amount: req.body.amount,
         tags: req.body['tags[]'],

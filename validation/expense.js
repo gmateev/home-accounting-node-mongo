@@ -17,7 +17,7 @@ module.exports = function validateExpenseInput(data) {
     }
 
     if (Validator.isEmpty(data.counterpart)) {
-        errors.counterpart = 'Email field is required';
+        errors.counterpart = 'Counterpart field is required';
     }
 
     if (Validator.isEmpty(data.amount)) {
