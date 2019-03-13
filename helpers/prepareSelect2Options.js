@@ -4,7 +4,6 @@ const prepareSelect2Options = value => {
 
         ]
     }
-    console.log(value);
     value.forEach((item, index) => {
         result.results.push({
             // id: index+1,
