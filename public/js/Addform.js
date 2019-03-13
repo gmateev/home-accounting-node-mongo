@@ -1,4 +1,6 @@
 $(document).ready(function() {
+    // Clear form
+    $('form').get(0).reset();
     $('#counterpart').select2({
         tags: true,
         multiple: false
@@ -54,7 +56,6 @@ $(document).ready(function() {
 // Set current date to today
     $('#date').get(0).valueAsDate = new Date();
     $('[data-type="submit"]').click(() => {
-        console.log($('form').serialize());
         $.ajax({
             url: 'http://wbs-bg.ddns.net:5000/expenses',
             method: 'POST',
@@ -66,6 +67,7 @@ $(document).ready(function() {
             .catch(err => alert(err.responseText));
         return false;
     });
+
 });
 
 
