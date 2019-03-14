@@ -23,6 +23,7 @@ $(document).ready(function() {
                 series: seriesData,
 
                 chart: {
+                    type: 'column',
                     scrollablePlotArea: {
                         minWidth: 700
                     }
@@ -82,6 +83,13 @@ $(document).ready(function() {
                 },
 
                 plotOptions: {
+                    column: {
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: true,
+                            color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+                        }
+                    },
                     series: {
                         cursor: 'pointer',
                         point: {
