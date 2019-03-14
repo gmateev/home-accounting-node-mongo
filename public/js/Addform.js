@@ -67,6 +67,7 @@ $(document).ready(function() {
             .catch(err => alert(err.responseText));
         return false;
     });
+    $('[data-type="back"]').click(() => {window.location = "index.html"; return false;});
 
 });
 
