@@ -3,7 +3,6 @@ $(document).ready(function() {
         groupBy: 'category'
     });
     $('#groupBy').change(function() {
-        loadChart({groupBy: this.value});
     })
 });
 
@@ -40,7 +39,8 @@ function loadChart(params)
                     type: 'column',
                     scrollablePlotArea: {
                         minWidth: 700
-                    }
+                    },
+                    height: 600
                 },
 
 
