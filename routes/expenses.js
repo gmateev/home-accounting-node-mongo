@@ -93,34 +93,52 @@ router.get("/counterparts", (req, res) => {
 });
 
 router.get("/sum", (req, res) => {
-   const results = Expense.aggregate([
-       /**
-        * @todo Match
-         */
-       {
-           $group: {
-               _id: {
-                   date: "$date",
-                   // tags: "$tags",
-                   category: "$category"
-               },
-               total: {$sum: "$amount"}
-           }
-       }
-   ]).sort({"_id.date":1})
-       .then(results => {
-           let data = {}
-           results.forEach(item => {
-                if(typeof data[item._id.category] == "undefined") {
-                    data[item._id.category] = [];
+   Promise.all(
+       [
+           Expense.aggregate([
+               /**
+                * @todo Match
+                 */
+               {
+                   $group: {
+                       _id: {
+                           date: "$date",
+                           // tags: "$tags",
+                           category: "$category"
+                       },
+                       total: {$sum: "$amount"}
+                   }
+               }
+           ]).sort({"_id.date":1})
+               .then(results => {
+                   let data = {}
+                   results.forEach(item => {
+                        if(typeof data[item._id.category] == "undefined") {
+                            data[item._id.category] = [];
+                        }
+                        data[item._id.category].push([
+                            item._id.date.getTime(), item.total
+                        ]);
+                   });
+                   res.json(data);
+               }),
+            Expense.aggregate([{
+                /**
+                 * @todo Match
+                 */
+                $group: {
+                    total: {$sum: "$amount"}
                 }
-                data[item._id.category].push([
-                    item._id.date.getTime(), item.total
-                ]);
-           });
-           res.json(data);
-       })
-       .catch(err => res.status(400).json(err));
+            }])
+       ]
+   )
+   .then(([results, total]) => {
+        res.json({
+           results,
+           total
+        });
+    })
+   .catch(err => res.status(400).json(err));
 });
 
 module.exports = router;
