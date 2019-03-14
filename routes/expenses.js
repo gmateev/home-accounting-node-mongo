@@ -152,4 +152,53 @@ router.get("/sum", (req, res) => {
    .catch(err => res.status(400).json(err));
 });
 
+router.get("/sum/:groupBy", (req, res) => {
+    console.log(req.params.groupBy);
+    Promise.all(
+        [
+            Expense.aggregate([
+                /**
+                 * @todo Match
+                 */
+                {
+                    $group: {
+                        _id: {
+                            date: "$date",
+                            // tags: "$tags",
+                            category: "$"+req.params.groupBy
+                        },
+                        total: {$sum: "$amount"}
+                    }
+                }
+            ]).sort({"_id.date":1}),
+
+            Expense.aggregate([{
+                /**
+                 * @todo Match
+                 */
+                $group: {
+                    _id: null,
+                    total: {$sum: "$amount"}
+                }
+            }])
+        ]
+    )
+        .then(([results, total]) => {
+            let data = {}
+            results.forEach(item => {
+                if(typeof data[item._id.category] == "undefined") {
+                    data[item._id.category] = [];
+                }
+                data[item._id.category].push([
+                    item._id.date.getTime(), item.total
+                ]);
+            });
+            res.json({
+                results: data,
+                total: total[0].total
+            });
+        })
+        .catch(err => res.status(400).json(err));
+});
+
 module.exports = router;

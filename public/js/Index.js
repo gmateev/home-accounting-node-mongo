@@ -1,8 +1,18 @@
 $(document).ready(function() {
+    loadChart({
+        groupBy: 'category'
+    });
+    $('#groupBy').change(() => {
+        loadChart({groupBy: this.value})
+    })
+});
+
+function loadChart(params)
+{
     const serverData = $.ajax({
-       url: 'http://wbs-bg.ddns.net:5000/expenses/sum',
-       method: 'GET',
-       contentType: 'application/json'
+        url: 'http://wbs-bg.ddns.net:5000/expenses/sum/'+params.groupBy,
+        method: 'GET',
+        contentType: 'application/json'
     }).then((serverData) => {
         /**
          * Setup Highcharts
@@ -79,7 +89,7 @@ $(document).ready(function() {
                 xAxis: {
                     type: 'datetime',
                     pointInterval: 24 * 3600 * 1000 // one day
-            },
+                },
 
                 legend: {
                     align: 'left',
@@ -130,5 +140,4 @@ $(document).ready(function() {
         );
     });
 
-
-});
+}
