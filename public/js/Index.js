@@ -92,11 +92,6 @@ function loadChart(params)
                     pointInterval: 24 * 3600 * 1000 // one day
                 },
 
-                legend: {
-                    align: 'left',
-                    verticalAlign: 'top',
-                    borderWidth: 0
-                },
 
                 tooltip: {
                     shared: true,
