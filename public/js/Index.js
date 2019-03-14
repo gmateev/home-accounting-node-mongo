@@ -30,11 +30,11 @@ $(document).ready(function() {
 
 
                 title: {
-                    text: 'Daily sessions at www.highcharts.com'
+                    text: 'Разходи на ден'
                 },
 
                 subtitle: {
-                    text: 'Source: Google Analytics'
+                    text: 'за целия период'
                 },
 
 
