@@ -2,13 +2,14 @@ $(document).ready(function() {
     loadChart({
         groupBy: 'category'
     });
-    $('#groupBy').change(() => {
-        loadChart({groupBy: this.value})
+    $('#groupBy').change(function() {
+        loadChart({groupBy: this.value});
     })
 });
 
 function loadChart(params)
 {
+    console.log(params);
     const serverData = $.ajax({
         url: 'http://wbs-bg.ddns.net:5000/expenses/sum/'+params.groupBy,
         method: 'GET',
