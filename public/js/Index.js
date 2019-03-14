@@ -4,6 +4,9 @@ $(document).ready(function() {
        method: 'GET',
        contentType: 'application/json'
     }).then((serverData) => {
+        /**
+         * Setup Highcharts
+         */
         let seriesData = [];
         let series = [];
         for (var property in serverData) {
@@ -40,6 +43,13 @@ $(document).ready(function() {
 
 
                 yAxis: [{ // left y axis
+                    stackLabels: {
+                        enabled: true,
+                        style: {
+                            fontWeight: 'bold',
+                            color: (Highcharts.theme && Highcharts.theme.textColor) || 'black'
+                        }
+                    },
                     title: {
                         text: null
                     },
@@ -87,7 +97,10 @@ $(document).ready(function() {
                         stacking: 'normal',
                         dataLabels: {
                             enabled: true,
-                            color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+                            color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+                            style: {
+                                fontSize: '8px'
+                            },
                         }
                     },
                     series: {
