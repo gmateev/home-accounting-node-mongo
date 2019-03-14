@@ -3,6 +3,7 @@ $(document).ready(function() {
         groupBy: 'category'
     });
     $('#groupBy').change(function() {
+        loadChart({groupBy: this.value});
     })
 });
 
@@ -40,7 +41,7 @@ function loadChart(params)
                     scrollablePlotArea: {
                         minWidth: 700
                     },
-                    height: 600
+                    height: 500
                 },
 
 
@@ -54,6 +55,7 @@ function loadChart(params)
 
 
                 yAxis: [{ // left y axis
+                    max: 500,
                     stackLabels: {
                         enabled: true,
                         style: {
@@ -72,6 +74,7 @@ function loadChart(params)
                     },
                     showFirstLabel: false
                 }, { // right y axis
+                    max: 500,
                     linkedTo: 0,
                     gridLineWidth: 0,
                     opposite: true,
