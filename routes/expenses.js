@@ -63,7 +63,11 @@ router.post("/", (req, res) => {
  * @todo ACL
  */
 router.get("/categories", (req, res) => {
-   Expense.find().distinct('category')
+   Expense.aggregate([
+       { "$project": { "category":1 }},
+       { "$unwind": "$category" },
+       { "$group": { "_id": "$category", "count": { "$sum": 1 } }}
+   ]).sort({"count": -1})
        .then(categories => res.json(prepareSelect2Options(categories)))
        .catch(err => res.status(404).json(err))
 });
@@ -75,7 +79,11 @@ router.get("/categories", (req, res) => {
  * @todo ACL
  */
 router.get("/tags", (req, res) => {
-    Expense.find().distinct('tags')
+    Expense.aggregate([
+        { "$project": { "tags":1 }},
+        { "$unwind": "$tags" },
+        { "$group": { "_id": "$tags", "count": { "$sum": 1 } }}
+    ]).sort({"count": -1})
         .then(tags => res.json(prepareSelect2Options(tags)))
         .catch(err => res.status(404).json(err))
 });
@@ -87,7 +95,11 @@ router.get("/tags", (req, res) => {
  * @todo ACL
  */
 router.get("/counterparts", (req, res) => {
-    Expense.find().distinct('counterpart')
+    Expense.aggregate([
+        { "$project": { "counterpart":1 }},
+        { "$unwind": "$counterpart" },
+        { "$group": { "_id": "$counterpart", "count": { "$sum": 1 } }}
+    ]).sort({"count": -1})
         .then(counterparts => res.json(prepareSelect2Options(counterparts)))
         .catch(err => res.status(404).json(err))
 });

@@ -7,7 +7,7 @@ const prepareSelect2Options = value => {
     value.forEach((item, index) => {
         result.results.push({
             // id: index+1,
-            text: item,
+            text: item._id,
             selected: false
         });
     });
