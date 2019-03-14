@@ -66,12 +66,7 @@ $(document).ready(function() {
                 }],
 
                 xAxis: {
-                    type: 'category',
-                    labels: {
-                        formatter: function() {
-                            return Highcharts.dateFormat('%a %d %b', new Date(this.value));
-                        }
-                    }
+                    type: 'datetime',
             },
 
                 legend: {

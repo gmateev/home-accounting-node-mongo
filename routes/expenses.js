@@ -116,7 +116,7 @@ router.get("/sum", (req, res) => {
                     data[item._id.category] = [];
                 }
                 data[item._id.category].push([
-                    item._id.date, item.total
+                    item._id.date.getTime(), item.total
                 ]);
            });
            res.json(data);
