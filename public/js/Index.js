@@ -67,6 +67,7 @@ $(document).ready(function() {
 
                 xAxis: {
                     type: 'datetime',
+                    pointInterval: 24 * 3600 * 1000 // one day
             },
 
                 legend: {
