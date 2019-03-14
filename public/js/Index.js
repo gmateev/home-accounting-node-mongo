@@ -3,61 +3,110 @@ $(document).ready(function() {
        url: 'http://wbs-bg.ddns.net:5000/expenses/sum',
        method: 'GET',
        contentType: 'application/json'
-    });
-    console.log(series);
-    let seriesData = [];
-    serverData.forEach((item, index) => {
-        seriesData.push({
-            name: index,
-            data: item
-        });
-    });
-    Highcharts.chart('chart-container', {
-
-        title: {
-            text: 'Solar Employment Growth by Sector, 2010-2016'
-        },
-
-        subtitle: {
-            text: 'Source: thesolarfoundation.com'
-        },
-
-        yAxis: {
-            title: {
-                text: 'Amount'
+    }).then((serverData) => {
+        let seriesData = [];
+        let series = [];
+        for (var property in serverData) {
+            if (serverData.hasOwnProperty(property)) {
+                seriesData.push(
+                    {
+                        name: property,
+                        data: serverData[property]
+                    }
+                );
+                series.push({name: property});
             }
-        },
-        legend: {
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'middle'
-        },
+        }
+        Highcharts.chart('chart-container', {
 
-        plotOptions: {
-            series: {
-                label: {
-                    connectorAllowed: false
+
+                series: seriesData,
+
+                chart: {
+                    scrollablePlotArea: {
+                        minWidth: 700
+                    }
                 },
-                pointStart: 2010
-            }
-        },
 
-        series: seriesData,
 
-        responsive: {
-            rules: [{
-                condition: {
-                    maxWidth: 500
+                title: {
+                    text: 'Daily sessions at www.highcharts.com'
                 },
-                chartOptions: {
-                    legend: {
-                        layout: 'horizontal',
-                        align: 'center',
-                        verticalAlign: 'bottom'
+
+                subtitle: {
+                    text: 'Source: Google Analytics'
+                },
+
+
+                yAxis: [{ // left y axis
+                    title: {
+                        text: null
+                    },
+                    labels: {
+                        align: 'left',
+                        x: 3,
+                        y: 16,
+                        format: '{value:.,0f}'
+                    },
+                    showFirstLabel: false
+                }, { // right y axis
+                    linkedTo: 0,
+                    gridLineWidth: 0,
+                    opposite: true,
+                    title: {
+                        text: null
+                    },
+                    labels: {
+                        align: 'right',
+                        x: -3,
+                        y: 16,
+                        format: '{value:.,0f}'
+                    },
+                    showFirstLabel: false
+                }],
+
+                xAxis: {
+                    type: 'datetime'
+                },
+
+                legend: {
+                    align: 'left',
+                    verticalAlign: 'top',
+                    borderWidth: 0
+                },
+
+                tooltip: {
+                    shared: true,
+                    crosshairs: true
+                },
+
+                plotOptions: {
+                    series: {
+                        cursor: 'pointer',
+                        point: {
+                            events: {
+                                click: function (e) {
+                                    hs.htmlExpand(null, {
+                                        pageOrigin: {
+                                            x: e.pageX || e.clientX,
+                                            y: e.pageY || e.clientY
+                                        },
+                                        headingText: this.series.name,
+                                        maincontentText: Highcharts.dateFormat('%A, %b %e, %Y', this.x) + ':<br/> ' +
+                                        this.y + ' sessions',
+                                        width: 200
+                                    });
+                                }
+                            }
+                        },
+                        marker: {
+                            lineWidth: 1
+                        }
                     }
                 }
-            }]
-        }
-
+            }
+        );
     });
+
+
 });

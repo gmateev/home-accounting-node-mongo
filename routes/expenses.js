@@ -100,12 +100,7 @@ router.get("/sum", (req, res) => {
        {
            $group: {
                _id: {
-                   date: {
-                       $dateToString: {
-                           date: "$date",
-                           format: "%Y-%m-%d"
-                       }
-                   },
+                   date: "$date",
                    // tags: "$tags",
                    category: "$category"
                },
