@@ -62,7 +62,7 @@ $(document).ready(function() {
             data: $('form').serialize()
         })
             .then(() => {
-                window.location.reload();
+                window.location = 'index.html';
             })
             .catch(err => alert(err.responseText));
         return false;
