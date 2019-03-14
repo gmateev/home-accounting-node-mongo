@@ -92,4 +92,41 @@ router.get("/counterparts", (req, res) => {
         .catch(err => res.status(404).json(err))
 });
 
+router.get("/sum", (req, res) => {
+   const results = Expense.aggregate([
+       /**
+        * @todo Match
+         */
+       {
+           $group: {
+               _id: {
+                   date: {
+                       $dateToString: {
+                           date: "$date",
+                           format: "%Y-%m-%d"
+                       }
+                   },
+                   // tags: "$tags",
+                   category: "$category"
+               },
+               total: {$sum: "$amount"}
+           }
+       }
+   ]).sort({"_id.date":1})
+       .then(results => {
+           let data = {}
+           results.forEach(item => {
+               console.log(item);
+                if(typeof data[item._id.category] == "undefined") {
+                    data[item._id.category] = [];
+                }
+                data[item._id.category].push([
+                    item._id.date, item.total
+                ]);
+           });
+           res.json(data);
+       })
+       .catch(err => res.status(400).json(err));
+});
+
 module.exports = router;
