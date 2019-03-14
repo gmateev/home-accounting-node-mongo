@@ -10,11 +10,11 @@ $(document).ready(function() {
         let seriesData = [];
         let series = [];
         for (var property in serverData.results) {
-            if (serverData.hasOwnProperty(property)) {
+            if (serverData.results.hasOwnProperty(property)) {
                 seriesData.push(
                     {
                         name: property,
-                        data: serverData[property]
+                        data: serverData.results[property]
                     }
                 );
                 series.push({name: property});
@@ -38,7 +38,7 @@ $(document).ready(function() {
                 },
 
                 subtitle: {
-                    text: 'Общо за целия период: ' + serverData.total
+                    text: 'Общо за целия период: <strong>' + serverData.total + '</strong>'
                 },
 
 
