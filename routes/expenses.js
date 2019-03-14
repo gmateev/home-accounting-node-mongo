@@ -109,33 +109,32 @@ router.get("/sum", (req, res) => {
                        total: {$sum: "$amount"}
                    }
                }
-           ]).sort({"_id.date":1})
-               .then(results => {
-                   let data = {}
-                   results.forEach(item => {
-                        if(typeof data[item._id.category] == "undefined") {
-                            data[item._id.category] = [];
-                        }
-                        data[item._id.category].push([
-                            item._id.date.getTime(), item.total
-                        ]);
-                   });
-                   res.json(data);
-               }),
+           ]).sort({"_id.date":1}),
+
             Expense.aggregate([{
                 /**
                  * @todo Match
                  */
                 $group: {
+                    _id: null,
                     total: {$sum: "$amount"}
                 }
             }])
        ]
    )
    .then(([results, total]) => {
+       let data = {}
+       results.forEach(item => {
+           if(typeof data[item._id.category] == "undefined") {
+               data[item._id.category] = [];
+           }
+           data[item._id.category].push([
+               item._id.date.getTime(), item.total
+           ]);
+       });
         res.json({
-           results,
-           total
+           results: data,
+           total: total[0].total
         });
     })
    .catch(err => res.status(400).json(err));
