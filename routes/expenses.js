@@ -111,7 +111,6 @@ router.get("/sum", (req, res) => {
        .then(results => {
            let data = {}
            results.forEach(item => {
-               console.log(item);
                 if(typeof data[item._id.category] == "undefined") {
                     data[item._id.category] = [];
                 }
