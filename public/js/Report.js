@@ -1,6 +1,5 @@
 const Report = {
   setInitialValues: function() {
-    debugger;
     const date = new Date();
     const firstDay = new Date(date.getFullYear(), date.getMonth(), 1, 12);
     $('#startDate').get(0).valueAsDate = firstDay;
