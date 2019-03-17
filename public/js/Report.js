@@ -12,11 +12,31 @@ const Report = {
       endDate: $('#endDate').val()
     }
   },
+  loadGrid: function(gridContainer, data) {
+    grid = new Slick.Grid('#'+gridContainer, data, [
+      {
+        name: "Група",
+        field: "group",
+        id: "group",
+        sortable: true,
+        width: 400
+      },
+      {
+        name: "Сума",
+        field: "total",
+        id: "total",
+        sortable: true
+      }
+    ], {
+      enableColumnReorder: false
+    });
+  },
+
   loadChart: function(chartContainer) {
     const params = this.getParams();
     console.log(params);
     const serverData = $.ajax({
-        url: 'http://localhost:5000/expenses/sum/'
+        url: 'http://wbs-bg.ddns.net:5000/expenses/sum/'
             + params.groupBy
             + '/' + params.startDate
             + '/' + params.endDate,
@@ -39,7 +59,9 @@ const Report = {
                 series.push({name: property});
             }
         }
-        Highcharts.chart(chartContainer, {
+      this.loadGrid('grid-container', serverData.gridData);
+
+      Highcharts.chart(chartContainer, {
 
 
                 series: seriesData,
@@ -146,6 +168,7 @@ const Report = {
             }
         );
     });
+
 
   }
 }

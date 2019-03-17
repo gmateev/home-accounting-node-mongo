@@ -153,7 +153,6 @@ router.get("/sum", (req, res) => {
 });
 
 router.get("/sum/:groupBy/:startDate/:endDate", (req, res) => {
-    console.log(new Date(req.params.startDate).toISOString());
     Promise.all(
         [
             Expense.aggregate([
@@ -177,6 +176,32 @@ router.get("/sum/:groupBy/:startDate/:endDate", (req, res) => {
                 }
             ]).sort({"_id.date":1}),
 
+          Expense.aggregate([
+            {
+              $match: {
+                date:  {
+                  $gte: new Date(req.params.startDate),
+                  $lte: new Date(req.params.endDate)
+                }
+              }
+            },
+            {
+              $group: {
+                _id: {
+                  category: "$"+req.params.groupBy
+                },
+                total: {$sum: "$amount"}
+              }
+            },
+            {
+              $project: {
+                "_id": 0,
+                "group": "$_id.category",
+                "total": 1
+              }
+            }
+          ]).sort({"total":-1}),
+
             Expense.aggregate([
               {
                 $match: {
@@ -194,8 +219,11 @@ router.get("/sum/:groupBy/:startDate/:endDate", (req, res) => {
             }])
         ]
     )
-        .then(([results, total]) => {
-          // console.log(results,total);
+        .then(([results, gridData, total]) => {
+          /**
+           * @todo rewrite this shit
+           * @type {{}}
+           */
             let data = {};
             results.forEach(item => {
                 if(typeof data[item._id.category] == "undefined") {
@@ -207,7 +235,8 @@ router.get("/sum/:groupBy/:startDate/:endDate", (req, res) => {
             });
             res.json({
                 results: data,
-                total: total[0].total
+                total: total[0].total,
+                gridData: gridData
             });
         })
         .catch(err => res.status(400).json(err));
