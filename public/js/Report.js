@@ -8,13 +8,18 @@ const Report = {
   getParams: function() {
     return {
       groupBy: $('#groupBy').val(),
+      startDate: $('#startDate').val(),
+      endDate: $('#endDate').val()
     }
   },
   loadChart: function(chartContainer) {
     const params = this.getParams();
     console.log(params);
     const serverData = $.ajax({
-        url: 'http://localhost:5000/expenses/sum/'+params.groupBy,
+        url: 'http://localhost:5000/expenses/sum/'
+            + params.groupBy
+            + '/' + params.startDate
+            + '/' + params.endDate,
         method: 'GET',
         contentType: 'application/json'
     }).then((serverData) => {
