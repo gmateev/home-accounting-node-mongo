@@ -19,7 +19,7 @@ const Report = {
         field: "group",
         id: "group",
         sortable: true,
-        width: 400
+        width: 350
       },
       {
         name: "Сума",
@@ -28,7 +28,8 @@ const Report = {
         sortable: true
       }
     ], {
-      enableColumnReorder: false
+      enableColumnReorder: false,
+      forceFitColumns: true
     });
   },
 
